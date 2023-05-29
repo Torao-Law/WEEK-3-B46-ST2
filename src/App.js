@@ -42,10 +42,17 @@ function App() {
         })
     }
 
+    const handleLogout = () => {
+      setData({
+        isLogin: false,
+        user: {}
+    })
+    }
+
     return (
         <>
         {data.isLogin ? (
-          <Welcome />
+          <Welcome logout={handleLogout}/>
         ) : (
           <>
             <GuestGreeting />
