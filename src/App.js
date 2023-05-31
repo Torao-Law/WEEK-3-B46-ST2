@@ -1,58 +1,48 @@
-import {useState, useEffect} from "react"
+import { useContext, useEffect } from "react"
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import {UserContext as User} from "./config/userContext"
 
 import Welcome from "./Welcome"
 import GuestGreeting from "./GuestGreeting"
 
 function App() {
-    const [data, setData] = useState({
-        isLogin: false,
-        user: {
-            email: "",
-            password: "",
-        }
-    })
+    const [state, dispatch] = useContext(User)
   
     // phase did mount / will unmount
     useEffect(() => {
         console.log("Componen Mounting")
-        console.log(data)
+        console.log(state)
         // eslint-disable-next-line
     }, [])
     
     // phase updating
     useEffect(() => {
-        if(data.user.email) {
+        if(state.user.email) {
             console.log("Componen Updating")
-            console.log(data)
+            console.log(state)
         }
-    }, [data])
+    }, [state])
 
     function handleOnSubmit(e) {
         e.preventDefault()
         const email = document.getElementById("email").value
         const password = document.getElementById("password").value
 
-        setData({
-            isLogin: true,
-            user: {
-                email,
-                password
-            }
-        })
-    }
+        const data = {
+          email,
+          password
+        }
 
-    const handleLogout = () => {
-      setData({
-        isLogin: false,
-        user: {}
-    })
+        dispatch({
+          type: 'LOGIN_SUCCESS',
+          payload: data
+        })
     }
 
     return (
         <>
-        {data.isLogin ? (
-          <Welcome logout={handleLogout}/>
+        {state.isLogin ? (
+          <Welcome />
         ) : (
           <>
             <GuestGreeting />
